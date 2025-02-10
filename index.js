@@ -1,4 +1,9 @@
-# Hey, README
+import inquirer from 'inquirer';
+import fs from 'fs';
+
+const generateHTML = ({ title, usage, github, license }) =>
+
+`# ${title}
 
 ## Description
 
@@ -22,10 +27,10 @@ What did you learn? - I learned how important it is for effective communication 
 4. Open the intergrated terminal on index.js in order to run "npm i" on the command line to ensure that "node-modules" and "package.json" are operating on your local device.
 
 ## Usage
-# To create a example of how a professional README should look like and walk you through the steps on how to make one.
+# ${usage}
 
 ## Github
-# https://github.com/NovaJ162
+# ${github}
 
 ## Credits
 
@@ -36,3 +41,31 @@ What did you learn? - I learned how important it is for effective communication 
 ## License
 
 Mozilla Public License Version 2.0
+` 
+
+
+inquirer
+  .prompt([
+    {
+      type: 'input',
+      name: 'title',
+      message: 'What is the title of your project?',
+    },
+    {
+      type: 'input',
+      name: 'usage',
+      message: 'Why are you making this project?',
+    },
+    {
+      type: 'input',
+      name: 'github',
+      message: 'What is the link to your Github?',
+    }
+  ])
+  .then((answers) => {
+    const htmlPageContent = generateHTML(answers);
+
+    fs.writeFile('README.md', htmlPageContent, (err) =>
+      err ? console.log(err) : console.log('Successfully created README.md!')
+    );
+  });
